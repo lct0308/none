@@ -1,0 +1,13 @@
+# 忽略数据集和缓存
+dataset/
+data/
+__pycache__/
+
+# 忽略模型权重文件
+*.pth
+*.pt
+*.ckpt
+
+# 忽略IDE配置文件
+.vscode/
+.idea/

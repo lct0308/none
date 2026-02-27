@@ -1,0 +1,4 @@
+/data1/pbw/Project/yolop/build/CMakeFiles/myplugins.dir
+/data1/pbw/Project/yolop/build/CMakeFiles/yolop.dir
+/data1/pbw/Project/yolop/build/CMakeFiles/edit_cache.dir
+/data1/pbw/Project/yolop/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1818 @@
+[2023-07-20 00:09:46,059] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-20 00:09:46,759] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-20 00:09:50,463] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-20 00:09:50,586] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-20 00:09:50,587] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-20 00:09:53,047] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-20 00:09:53,050] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-20 00:11:58,393] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-20 00:11:58,393] [lib.experiment] [INFO] Results:
+ {'TP': 3350, 'FP': 315, 'FN': 615, 'Precision': 0.9140518417462483, 'Recall': 0.8448928121059268, 'F1': 0.8781127129750983}
+[2023-07-20 00:12:25,351] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-20 00:12:26,045] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-20 00:12:29,786] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-20 00:12:29,911] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-20 00:12:29,911] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-20 00:12:32,313] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-20 00:12:32,317] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-20 00:13:56,350] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-20 00:13:56,350] [lib.experiment] [INFO] Results:
+ {'TP': 1142, 'FP': 104, 'FN': 280, 'Precision': 0.9165329052969502, 'Recall': 0.8030942334739803, 'F1': 0.856071964017991}
+[2023-07-20 00:14:26,670] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-20 00:14:27,355] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-20 00:14:31,071] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-20 00:14:31,191] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-20 00:14:31,191] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-20 00:14:33,632] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-20 00:14:33,635] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-20 00:16:23,477] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-20 00:16:23,477] [lib.experiment] [INFO] Results:
+ {'TP': 2586, 'FP': 97, 'FN': 222, 'Precision': 0.9638464405516213, 'Recall': 0.9209401709401709, 'F1': 0.9419049353487524}
+[2023-07-20 00:16:47,793] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-20 00:16:56,986] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-20 00:17:00,568] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-20 00:17:00,671] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-20 00:17:00,671] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-20 00:17:03,074] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-20 00:17:03,076] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-20 00:18:18,744] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-20 00:18:18,745] [lib.experiment] [INFO] Results:
+ {'TP': 610, 'FP': 119, 'FN': 272, 'Precision': 0.8367626886145405, 'Recall': 0.691609977324263, 'F1': 0.7572936064556176}
+[2023-07-20 00:19:11,469] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-20 00:19:21,004] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-20 00:19:24,627] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-20 00:19:24,743] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-20 00:19:24,744] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-20 00:19:27,186] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-20 00:19:27,188] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-20 00:21:15,964] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-20 00:21:15,964] [lib.experiment] [INFO] Results:
+ {'TP': 2401, 'FP': 102, 'FN': 302, 'Precision': 0.9592489013184179, 'Recall': 0.8882722900480947, 'F1': 0.9223972339608144}
+[2023-07-20 00:21:49,107] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-20 00:21:58,592] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-20 00:22:02,192] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-20 00:22:02,279] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-20 00:22:02,279] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-20 00:22:04,811] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-20 00:22:04,813] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-20 00:23:31,814] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-20 00:23:31,814] [lib.experiment] [INFO] Results:
+ {'TP': 1130, 'FP': 153, 'FN': 382, 'Precision': 0.8807482462977396, 'Recall': 0.7473544973544973, 'F1': 0.8085867620751342}
+[2023-07-20 00:24:39,064] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-20 00:24:48,325] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-20 00:24:51,953] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-20 00:24:52,042] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-20 00:24:52,042] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-20 00:24:54,594] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-20 00:24:54,596] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-20 00:26:17,626] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-20 00:26:17,626] [lib.experiment] [INFO] Results:
+ {'TP': 905, 'FP': 137, 'FN': 472, 'Precision': 0.8685220729366603, 'Recall': 0.6572258533042846, 'F1': 0.7482430756510956}
+[2023-07-20 00:26:43,161] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-20 00:26:52,707] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-20 00:26:56,296] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-20 00:26:56,391] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-20 00:26:56,391] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-20 00:26:58,890] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-20 00:26:58,892] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-20 00:28:25,619] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-20 00:28:25,619] [lib.experiment] [INFO] Results:
+ {'TP': 1247, 'FP': 88, 'FN': 224, 'Precision': 0.9340823970037453, 'Recall': 0.8477226376614548, 'F1': 0.8888096935138988}
+[2023-07-26 07:01:00,346] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=None, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-26 07:01:01,061] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0100.pt
+[2023-07-26 07:01:05,458] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-26 07:01:05,599] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-26 07:01:05,599] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-26 07:01:08,235] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-26 07:01:08,238] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-26 07:05:00,860] [lib.experiment] [DEBUG] Testing session finished on model after epoch 100.
+[2023-07-26 07:05:00,860] [lib.experiment] [INFO] Results:
+ {'TP': 9160, 'FP': 439, 'FN': 1787, 'Precision': 0.9542660693822274, 'Recall': 0.8367589293870467, 'F1': 0.8916577435997275}
+[2023-07-27 03:13:24,525] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=None, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-27 03:13:25,380] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0100.pt
+[2023-07-27 03:13:33,468] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-27 03:13:33,720] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-27 03:13:33,721] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-27 03:14:56,549] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-27 03:14:58,051] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-27 03:15:06,259] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-27 03:15:06,537] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-27 03:15:06,537] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-27 03:15:10,800] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-27 03:15:10,803] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-27 03:22:36,560] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-27 03:22:36,561] [lib.experiment] [INFO] Results:
+ {'TP': 9584, 'FP': 602, 'FN': 1363, 'Precision': 0.9408992735126644, 'Recall': 0.8754910021010323, 'F1': 0.907017460843231}
+[2023-07-27 04:03:26,565] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-27 04:03:27,442] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-27 04:03:36,452] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-27 04:03:36,819] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-27 04:03:36,819] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-27 04:03:41,656] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-27 04:03:41,659] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.15
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-27 04:13:03,300] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-27 04:13:03,301] [lib.experiment] [INFO] Results:
+ {'TP': 9856, 'FP': 991, 'FN': 1091, 'Precision': 0.908638333179681, 'Recall': 0.9003379921439664, 'F1': 0.9044691199412681}
+[2023-07-27 04:20:06,271] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-27 04:20:07,450] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-27 04:20:15,293] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-27 04:20:15,551] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-27 04:20:15,551] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-27 04:20:19,975] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-27 04:20:19,980] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.15
+  nms_thres: 35.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-27 04:27:31,349] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-27 04:27:31,349] [lib.experiment] [INFO] Results:
+ {'TP': 9607, 'FP': 866, 'FN': 1340, 'Precision': 0.9173111811324358, 'Recall': 0.8775920343473098, 'F1': 0.8970121381886087}
+[2023-07-27 04:30:24,219] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=96, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-07-27 04:30:25,116] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-07-27 04:30:32,066] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-07-27 04:30:32,309] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-07-27 04:30:32,309] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-07-27 04:30:36,224] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-07-27 04:30:36,225] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 28.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-07-27 04:37:58,903] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-07-27 04:37:58,903] [lib.experiment] [INFO] Results:
+ {'TP': 9642, 'FP': 654, 'FN': 1305, 'Precision': 0.9364801864801865, 'Recall': 0.8807892573307755, 'F1': 0.9077813868097727}
+[2023-08-02 03:56:07,618] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=None, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-08-02 03:56:11,507] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-08-02 03:57:19,705] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-08-02 03:57:21,364] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-08-02 03:57:21,368] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-08-02 03:57:34,562] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-08-02 03:57:34,584] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 8
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-08-02 04:21:01,721] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-08-02 04:21:01,753] [lib.experiment] [INFO] Results:
+ {'TP': 10043, 'FP': 890, 'FN': 2080, 'Precision': 0.9185950791182658, 'Recall': 0.8284253072671781, 'F1': 0.8711832061068702}
+[2023-08-02 04:22:23,629] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=None, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-08-02 04:22:26,490] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-08-02 04:23:42,862] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-08-02 04:23:43,606] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-08-02 04:23:43,610] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-08-02 04:23:57,938] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-08-02 04:23:57,945] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 8
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-08-02 04:26:09,879] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=None, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-08-02 04:26:12,766] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-08-02 04:27:46,489] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-08-02 04:27:49,687] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-08-02 04:27:49,692] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-08-02 04:28:00,740] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-08-02 04:28:00,766] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 8
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-08-02 04:43:15,505] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=None, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-08-02 04:43:18,787] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-08-02 04:44:38,127] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-08-02 04:44:39,478] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-08-02 04:44:39,480] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-08-02 04:44:56,340] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-08-02 04:44:56,388] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-08-02 10:49:17,314] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=None, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-08-02 10:49:18,038] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-08-02 10:49:25,700] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-08-02 10:49:25,858] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-08-02 10:49:25,858] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-08-02 10:49:28,468] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-08-02 10:49:28,469] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 30.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-09-01 01:37:04,449] [lib.experiment] [DEBUG] CLI Args:
+ Namespace(cfg='cfgs/laneatt_mydataset_yolop.yml', cpu=False, deterministic=False, epoch=None, exp_name='laneatt_yolop_mydataset_rdi', mode='test', resume=False, save_predictions=False, view=None)
+[2023-09-01 01:37:13,973] [lib.runner] [INFO] Loading model experiments/laneatt_yolop_mydataset_rdi/models/model_0096.pt
+[2023-09-01 01:37:19,550] [lib.datasets.mydataset] [INFO] Loading Mydataset annotations (cached)...
+[2023-09-01 01:37:19,737] [lib.datasets.mydataset] [INFO] 2234 annotations loaded, with a maximum of 7 lanes in an image.
+[2023-09-01 01:37:19,737] [lib.datasets.lane_dataset] [INFO] Transforming annotations to the model's target format...
+[2023-09-01 01:37:22,377] [lib.datasets.lane_dataset] [INFO] Done.
+[2023-09-01 01:37:22,379] [lib.experiment] [DEBUG] Beginning testing session. CFG used:
+# Model settings
+val_every: 1
+model_checkpoint_interval: 1
+seed: 0
+model:
+  name: LaneATT
+  parameters:
+    # backbone: resnet34
+    S: &S 72
+    topk_anchors: 1000
+    anchors_freq_path: 'data/culane_anchors_freq.pt'
+    img_h: &img_h 720
+    img_w: &img_w 1280
+batch_size: 1
+epochs: 100
+loss_parameters: {}
+train_parameters:
+  conf_threshold:
+  nms_thres: 15.
+  nms_topk: 3000
+test_parameters:
+  conf_threshold: 0.2
+  nms_thres: 28.
+  nms_topk: &max_lanes 14
+optimizer:
+  name: Adam
+  parameters:
+    lr: 0.0003
+lr_scheduler:
+  name: CosineAnnealingLR
+  parameters:
+    T_max: 166650 # 15 * 11110 iterations
+
+# Dataset settings
+datasets:
+  train:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: train
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 1.0
+      augmentations:
+        - name: Affine
+          parameters:
+            translate_px:
+             x: !!python/tuple [-25, 25]
+             y: !!python/tuple [-10, 10]
+            rotate: !!python/tuple [-6, 6]
+            scale: !!python/tuple [0.85, 1.15]
+        - name: HorizontalFlip
+          parameters:
+            p: 0.5
+
+      root: "/data1/pbw/Mydataset/"
+
+  test:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: test
+      img_size: [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+  val:
+    type: LaneDataset
+    parameters:
+      S: *S
+      dataset: mydataset
+      split: val
+      img_size:  [*img_h, *img_w]
+      max_lanes: *max_lanes
+      normalize: false
+      aug_chance: 0
+      augmentations:
+      root: "/data1/pbw/Mydataset/"
+
+[2023-09-01 01:41:27,170] [lib.experiment] [DEBUG] Testing session finished on model after epoch 96.
+[2023-09-01 01:41:27,170] [lib.experiment] [INFO] Results:
+ {'TP': 9647, 'FP': 649, 'FN': 1300, 'Precision': 0.936965811965812, 'Recall': 0.8812460034712707, 'F1': 0.9082521301134492}
